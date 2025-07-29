@@ -58,7 +58,7 @@ for NAME in "${ADDR[@]}"; do
     if [ -n "$NAME" ]; then
         INSPECT_JSON=$($SCOPEO inspect docker://$SOURCE_REGISTRY/$NAME:latest 2>&1)
         if echo "$INSPECT_JSON" | grep -q "requested access to the resource is denied"; then
-            echo "Image $SOURCE_REGISTRY/$NAME:latest does not exist or access denied. Skipping."
+            echo "❌ Image $SOURCE_REGISTRY/$NAME:latest does not exist or access denied. Skipping."
             continue
         fi
         # Extract tag from Config.Env using grep and sed
