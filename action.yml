@@ -1,0 +1,40 @@
+name: "Transfer Bitnami Images"
+description: "Transfer and pin Bitnami images from secure registry to a custom registry, tagging by product version."
+author: "vaggeliskls"
+inputs:
+  SOURCE_REGISTRY:
+    description: "Source registry (default: docker.io/bitnamisecure)"
+    required: false
+    default: "docker.io/bitnamisecure"
+  TARGET_REGISTRY:
+    description: "Target registry (ex. ghcr.io/vaggeliskls)"
+    required: true
+  SOURCE_IMAGES:
+    description: "List of images to transfer (newline or comma separated)"
+    required: true
+  SOURCE_TAG_FIELD:
+    description: "Field to use for tagging (default: APP_VERSION)"
+    required: false
+    default: "APP_VERSION"
+  SKOPEO_ARGS:
+    description: "Additional arguments for skopeo copy"
+    required: false
+    default: "--all"
+branding:
+  icon: "upload-cloud"
+  color: "blue"
+runs:
+  using: "composite"
+  steps:
+    - name: Transfer Bitnami Images
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/transfer-bitnami-images.sh
+        ${{ github.action_path }}/transfer-bitnami-images.sh
+        rm -rf ./skopeo
+      env:
+        SOURCE_REGISTRY: ${{ inputs.SOURCE_REGISTRY }}
+        TARGET_REGISTRY: ${{ inputs.TARGET_REGISTRY }}
+        SOURCE_IMAGES: ${{ inputs.SOURCE_IMAGES }}
+        SOURCE_TAG_FIELD: ${{ inputs.SOURCE_TAG_FIELD }}
+        SKOPEO_ARGS_ENV: ${{ inputs.SKOPEO_ARGS }}
