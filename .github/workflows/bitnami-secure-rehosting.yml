@@ -12,7 +12,7 @@ env:
 jobs:
   transform-bitnami-images:
     name: Transform Bitnami images
-    runs-on: beast
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
