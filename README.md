@@ -21,10 +21,21 @@ Bitnami's new policy limits direct access to secure images, which can break CI/C
 - Ensuring compliance and reliability for downstream users.
 
 ## Usage
-- Clone this repository.
-- Review the workflow in `.github/workflows/bitnami-secure-rehosting.yml`.
-- Customize the image list or registry settings as needed.
-- Trigger the workflow manually or let it run on schedule.
+To manually transfer and tag images, run:
+```bash
+./transfer-bitnami-images.sh
+```
+This will process all images listed in your workflow or environment and push them to your configured registry.
+
+To preview the actions without making any changes, use the debug mode:
+```bash
+./transfer-bitnami-images.sh --debug
+```
+You can also pass additional arguments to control `skopeo` behavior (e.g., `--all`, `--insecure-policy`). For example:
+```bash
+./transfer-bitnami-images.sh --all --insecure-policy
+```
+Any input except `--debug` will be passed as arguments to `skopeo`.
 
 
 

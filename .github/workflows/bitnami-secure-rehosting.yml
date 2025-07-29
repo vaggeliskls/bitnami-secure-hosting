@@ -30,7 +30,20 @@ jobs:
           TARGET_REGISTRY: ghcr.io/vaggeliskls
           SOURCE_REGISTRY: docker.io/bitnamisecure
           SKOPEO_ARGS_ENV: --all
-          SOURCE_IMAGES: gitea,postgresql,redis,kafka,mongodb,rabbitmq,redis,minio,nginx-ingress-controller,nginx,cainjector,cert-manager,cert-manager-webhook
+          SOURCE_IMAGES: |-
+            gitea
+            postgresql
+            redis
+            kafka
+            mongodb
+            rabbitmq
+            redis
+            minio
+            nginx-ingress-controller
+            nginx
+            cainjector
+            cert-manager
+            cert-manager-webhook
         run: |
           chmod +x ./transfer-bitnami-images.sh
           ./transfer-bitnami-images.sh

@@ -29,7 +29,13 @@ fi
 TAG_FIELD="${SOURCE_TAG_FIELD:-APP_VERSION}"
 
 
-IFS=',' read -ra ADDR <<< "$SOURCE_IMAGES"
+if [[ "$SOURCE_IMAGES" == *$'\n'* ]]; then
+    # Multiline input: split by newlines
+    IFS=$'\n' read -d '' -ra ADDR <<< "$SOURCE_IMAGES"
+else
+    # Comma-separated input: split by commas
+    IFS=',' read -ra ADDR <<< "$SOURCE_IMAGES"
+fi
 
 echo "Source images count: ${#ADDR[@]}"
 TRANSFERRED=0
