@@ -62,7 +62,7 @@ done
 for NAME in "${ADDR[@]}"; do
     NAME=$(echo $NAME | xargs)
     if [ -n "$NAME" ]; then
-        INSPECT_JSON=$($SCOPEO inspect docker://$SOURCE_REGISTRY/$NAME:latest 2>&1)
+        INSPECT_JSON=$($SCOPEO inspect --override-os linux --override-arch amd64 docker://$SOURCE_REGISTRY/$NAME:latest 2>&1)
         if echo "$INSPECT_JSON" | grep -q "requested access to the resource is denied"; then
             echo "❌ Image $SOURCE_REGISTRY/$NAME:latest does not exist or access denied. Skipping."
             continue
@@ -79,6 +79,12 @@ for NAME in "${ADDR[@]}"; do
             echo "[DEBUG] Would transfer: $SRC_IMAGE -> $DEST_IMAGE"
             TRANSFERRED=$((TRANSFERRED+1))
         else
+            # Check if destination image already exists
+            DEST_EXISTS=$($SCOPEO inspect --override-os linux --override-arch amd64 docker://$DEST_IMAGE 2>&1)
+            if echo "$DEST_EXISTS" | grep -q 'Name:'; then
+                echo "⚠️  Destination image $DEST_IMAGE already exists. Skipping."
+                continue
+            fi
             echo "✅ Transferring $SRC_IMAGE to $DEST_IMAGE"
             $SCOPEO copy "${SKOPEO_ARGS[@]}" docker://$SRC_IMAGE docker://$DEST_IMAGE && TRANSFERRED=$((TRANSFERRED+1))
         fi
