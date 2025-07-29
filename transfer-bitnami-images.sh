@@ -64,16 +64,16 @@ for NAME in "${ADDR[@]}"; do
         # Extract tag from Config.Env using grep and sed
         TAG=$(echo "$INSPECT_JSON" | grep -o "${TAG_FIELD}=[^\" ]*" | head -n1 | sed "s/${TAG_FIELD}=//")
         if [ -z "$TAG" ]; then
-            echo "Could not find $TAG_FIELD in $NAME:latest. Skipping."
+            echo "❌ Could not find $TAG_FIELD in $NAME:latest. Skipping."
             continue
         fi
-        SRC_IMAGE="$SOURCE_REGISTRY/$NAME:$TAG"
+        SRC_IMAGE="$SOURCE_REGISTRY/$NAME:latest"
         DEST_IMAGE="$TARGET_REGISTRY/$NAME:$TAG"
         if [ "$DEBUG" = true ]; then
             echo "[DEBUG] Would transfer: $SRC_IMAGE -> $DEST_IMAGE"
             TRANSFERRED=$((TRANSFERRED+1))
         else
-            echo "Transferring $SRC_IMAGE to $DEST_IMAGE"
+            echo "✅ Transferring $SRC_IMAGE to $DEST_IMAGE"
             $SCOPEO copy "${SKOPEO_ARGS[@]}" docker://$SRC_IMAGE docker://$DEST_IMAGE && TRANSFERRED=$((TRANSFERRED+1))
         fi
     fi
