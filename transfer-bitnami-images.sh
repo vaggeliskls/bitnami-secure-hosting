@@ -80,8 +80,7 @@ for NAME in "${ADDR[@]}"; do
             TRANSFERRED=$((TRANSFERRED+1))
         else
             # Check if destination image already exists
-            DEST_EXISTS=$($SCOPEO inspect --override-os linux --override-arch amd64 docker://$DEST_IMAGE 2>&1)
-            if echo "$DEST_EXISTS" | grep -q 'Name:'; then
+            if $SCOPEO inspect --override-os linux --override-arch amd64 docker://$DEST_IMAGE &>/dev/null; then
                 echo "⚠️  Destination image $DEST_IMAGE already exists. Skipping."
                 continue
             fi
