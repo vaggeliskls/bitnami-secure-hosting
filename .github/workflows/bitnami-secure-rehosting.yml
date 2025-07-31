@@ -24,37 +24,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Fetch images list from DockerHub
+        id: fetch_images
+        env:
+          ORG: bitnamisecure
+        run: |
+          chmod +x ./fetch-images.sh
+          IMAGES=$(./fetch-images.sh)
+          echo "images=$IMAGES" >> "$GITHUB_OUTPUT"
+
       - name: Transform images
         env:
           SOURCE_TAG_FIELD: APP_VERSION
           TARGET_REGISTRY: ghcr.io/vaggeliskls
           SOURCE_REGISTRY: docker.io/bitnamisecure
           SKOPEO_ARGS_ENV: --all
-          SOURCE_IMAGES: |-
-            gitea
-            postgresql
-            redis
-            kafka
-            mongodb
-            rabbitmq
-            redis
-            minio
-            nginx-ingress-controller
-            nginx
-            cainjector
-            cert-manager
-            cert-manager-webhook
-            node
-            kubectl
-            os-shell
-            redis-exporter
-            postgres-exporter
-            nginx-exporter
-            memcached-exporter
-            libgcc
-            haproxy
-            git
-            golang
+          SOURCE_IMAGES: ${{ steps.fetch_images.outputs.images }}
         run: |
           chmod +x ./transfer-bitnami-images.sh
           ./transfer-bitnami-images.sh
