@@ -26,6 +26,15 @@ branding:
 runs:
   using: "composite"
   steps:
+    - name: Fetch images list from DockerHub
+      id: fetch_images
+      env:
+        ORG: bitnamisecure
+      run: |
+        chmod +x ./fetch-images.sh
+        IMAGES=$(./fetch-images.sh)
+        echo "images=$IMAGES" >> "$GITHUB_OUTPUT"
+
     - name: Transfer Bitnami Images
       shell: bash
       run: |
@@ -35,6 +44,6 @@ runs:
       env:
         SOURCE_REGISTRY: ${{ inputs.SOURCE_REGISTRY }}
         TARGET_REGISTRY: ${{ inputs.TARGET_REGISTRY }}
-        SOURCE_IMAGES: ${{ inputs.SOURCE_IMAGES }}
+        SOURCE_IMAGES: ${{ steps.fetch_images.outputs.images }}
         SOURCE_TAG_FIELD: ${{ inputs.SOURCE_TAG_FIELD }}
         SKOPEO_ARGS_ENV: ${{ inputs.SKOPEO_ARGS }}
