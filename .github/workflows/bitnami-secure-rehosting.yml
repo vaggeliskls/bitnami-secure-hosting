@@ -44,6 +44,17 @@ jobs:
             cainjector
             cert-manager
             cert-manager-webhook
+            node
+            kubectl
+            os-shell
+            redis-exporter
+            postgres-exporter
+            nginx-exporter
+            memcached-exporter
+            libgcc
+            haproxy
+            git
+            golang
         run: |
           chmod +x ./transfer-bitnami-images.sh
           ./transfer-bitnami-images.sh
