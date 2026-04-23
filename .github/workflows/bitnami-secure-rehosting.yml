@@ -3,7 +3,7 @@ name: BITNAMI images Secure Rehosting
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # Runs every day at 00:00 UTC
+    - cron: "0 0 * * 0" # Runs every Sunday at 00:00 UTC
 
 env:
   REPOSITORY_NAME: ${{ github.repository }}
