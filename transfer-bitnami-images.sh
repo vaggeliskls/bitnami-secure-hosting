@@ -14,7 +14,7 @@ fi
 
 SOURCE_REGISTRY="${SOURCE_REGISTRY:-docker.io/bitnamisecure}"
 TARGET_REGISTRY="${TARGET_REGISTRY:-ghcr.io/vaggeliskls}"
-SOURCE_IMAGES="${SOURCE_IMAGES:-gitea,postgresql,redis,kafka,mongodb,rabbitmq,redis,minio,nginx-ingress-controller,nginx,cainjector,cert-manager,cert-manager-webhook}"
+SOURCE_IMAGES="${SOURCE_IMAGES:-postgresql,redis,mongodb,redis,nginx}"
 
 if [ -z "$TARGET_REGISTRY" ]; then
     echo "TARGET_REGISTRY environment variable not set."
